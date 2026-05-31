@@ -24,22 +24,26 @@ app.get("/", (req, res) => {
 });
 
 app.get("/users", (req, res) => {
-  db.all("SELECT * FROM users", [], (err, rows) => {
-    if (err) {
-      return res.status(500).json({
-        error: err.message
-      });
+  db.all(
+    "SELECT * FROM users",
+    [],
+    (err, rows) => {
+
+      if (err) {
+        return res.status(500).json({
+          error: err.message
+        });
+      }
+
+      res.json(rows);
     }
-
-    res.json(rows);
-  });
+  );
 });
-
-
 
 app.post("/login", (req, res) => {
 
-  const { username, password } = req.body;
+  const { username, password } =
+    req.body;
 
   db.get(
     "SELECT * FROM users WHERE name = ?",
@@ -60,29 +64,34 @@ app.post("/login", (req, res) => {
         });
       }
 
-      const match = await bcrypt.compare(
-        password,
-        user.password
-      );
+      const match =
+        await bcrypt.compare(
+          password,
+          user.password
+        );
 
       if (match) {
-  res.json({
-    success: true,
-    message: "Login successful",
-    user: {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      city: user.city,
-      state: user.state,
-      zip: user.zip
-    }
-  });
+
+        res.json({
+          success: true,
+          message: "Login successful",
+          user: {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            city: user.city,
+            state: user.state,
+            zip: user.zip
+          }
+        });
+
       } else {
+
         res.json({
           success: false,
           message: "Incorrect password"
         });
+
       }
     }
   );
@@ -128,7 +137,8 @@ app.post("/signup", async (req, res) => {
       if (user) {
         return res.json({
           success: false,
-          message: "Username or email already exists"
+          message:
+            "Username or email already exists"
         });
       }
 
@@ -158,7 +168,8 @@ app.post("/signup", async (req, res) => {
 
           res.json({
             success: true,
-            message: "Account created successfully"
+            message:
+              "Account created successfully"
           });
         }
       );
@@ -169,6 +180,7 @@ app.post("/signup", async (req, res) => {
 app.post("/reserve", (req, res) => {
 
   const {
+    userID,
     from,
     to,
     date,
@@ -177,6 +189,7 @@ app.post("/reserve", (req, res) => {
   } = req.body;
 
   if (
+    !userID ||
     !from ||
     !to ||
     !date ||
@@ -189,23 +202,24 @@ app.post("/reserve", (req, res) => {
     });
   }
 
-  const ticketsDb = new sqlite3.Database(
-    "./database/tickets.sqlite"
-  );
+  const ticketsDb =
+    new sqlite3.Database(
+      "./database/tickets.sqlite"
+    );
 
   ticketsDb.run(
     `INSERT INTO tickets
     (userID, departCity, destination, passengers, class, date)
     VALUES (?, ?, ?, ?, ?, ?)`,
     [
-      1,
+      userID,
       from,
       to,
       passengers,
       travelClass,
       date
     ],
-    function(err) {
+    function (err) {
 
       if (err) {
         return res.status(500).json({
@@ -216,21 +230,23 @@ app.post("/reserve", (req, res) => {
 
       res.json({
         success: true,
-        message: "Flight reserved successfully"
+        message:
+          "Flight reserved successfully"
       });
     }
   );
 });
 
-app.get("/tickets", (req, res) => {
+app.get("/tickets/:userID", (req, res) => {
 
-  const ticketsDb = new sqlite3.Database(
-    "./database/tickets.sqlite"
-  );
+  const ticketsDb =
+    new sqlite3.Database(
+      "./database/tickets.sqlite"
+    );
 
   ticketsDb.all(
-    "SELECT * FROM tickets",
-    [],
+    "SELECT * FROM tickets WHERE userID = ?",
+    [req.params.userID],
     (err, rows) => {
 
       if (err) {
@@ -246,16 +262,18 @@ app.get("/tickets", (req, res) => {
 
 app.delete("/tickets/:id", (req, res) => {
 
-  const ticketId = req.params.id;
+  const ticketId =
+    req.params.id;
 
-  const ticketsDb = new sqlite3.Database(
-    "./database/tickets.sqlite"
-  );
+  const ticketsDb =
+    new sqlite3.Database(
+      "./database/tickets.sqlite"
+    );
 
   ticketsDb.run(
     "DELETE FROM tickets WHERE id = ?",
     [ticketId],
-    function(err) {
+    function (err) {
 
       if (err) {
         return res.status(500).json({
@@ -266,7 +284,8 @@ app.delete("/tickets/:id", (req, res) => {
 
       res.json({
         success: true,
-        message: "Ticket cancelled successfully"
+        message:
+          "Ticket cancelled successfully"
       });
     }
   );
@@ -275,5 +294,7 @@ app.delete("/tickets/:id", (req, res) => {
 const PORT = 5000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(
+    `Server running on port ${PORT}`
+  );
 });

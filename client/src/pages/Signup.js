@@ -20,21 +20,26 @@ function Signup() {
 
   const handleSignup = async () => {
 
-    const response = await fetch(
-      "http://localhost:5000/signup",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(formData)
-      }
-    );
+  const response = await fetch(
+    "http://localhost:5000/signup",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(formData)
+    }
+  );
 
-    const data = await response.json();
+  const data = await response.json();
 
-    alert(data.message);
-  };
+  alert(data.message);
+
+  if (data.success) {
+    window.location.href = "/login";
+  }
+
+};
 
   return (
     <div className="hero">

@@ -16,6 +16,12 @@ import Login from "./pages/Login";
 import Reservations from "./pages/Reservations";
 
 function App() {
+
+  const user =
+    JSON.parse(
+      localStorage.getItem("user")
+    );
+
   return (
     <BrowserRouter>
 
@@ -34,18 +40,57 @@ function App() {
           </li>
 
           <li>
-            <Link to="/reservations">Reservations</Link>
+            <Link to="/reservations">
+              Reservations
+            </Link>
           </li>
 
-          <li>
-            <Link to="/login">Login</Link>
-          </li>
-          <li>
-            <Link to="/signup">Signup</Link>
-          </li>
-          <li>
-            <Link to="/tickets">My Tickets</Link>
-          </li>
+          {user ? (
+  <>
+    <li>
+      <Link to="/tickets">
+        My Tickets
+      </Link>
+    </li>
+
+    <li>
+      <Link to="/profile">
+        Profile
+      </Link>
+    </li>
+
+    <li>
+      <li>
+  <a
+    href="/"
+    onClick={() => {
+      localStorage.removeItem("user");
+    }}
+    style={{
+      color: "white",
+      textDecoration: "none"
+    }}
+  >
+    Logout
+  </a>
+</li>
+    </li>
+  </>
+) : (
+            <>
+              <li>
+                <Link to="/login">
+                  Login
+                </Link>
+              </li>
+
+              <li>
+                <Link to="/signup">
+                  Signup
+                </Link>
+              </li>
+            </>
+          )}
 
         </ul>
 
@@ -53,17 +98,43 @@ function App() {
 
       <Routes>
 
-        <Route path="/" element={<Home />} />
-
-        <Route path="/flights" element={<Flights />} />
-
-        <Route path="/reservations" element={<Reservations />} />
-
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/profile" element={<Profile />} />
         <Route
-              path="/tickets" element={<MyTickets />}/>
+          path="/"
+          element={<Home />}
+        />
+
+        <Route
+          path="/flights"
+          element={<Flights />}
+        />
+
+        <Route
+          path="/reservations"
+          element={<Reservations />}
+        />
+
+        <Route
+          path="/login"
+          element={<Login />}
+        />
+
+        <Route
+          path="/signup"
+          element={<Signup />}
+        />
+
+        <Route
+          path="/profile"
+          element={<Profile />}
+        />
+
+        <Route
+          path="/tickets"
+          element={<MyTickets />}
+        />
+
+
+
       </Routes>
 
     </BrowserRouter>

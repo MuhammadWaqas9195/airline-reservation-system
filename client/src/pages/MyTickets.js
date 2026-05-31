@@ -6,7 +6,14 @@ function MyTickets() {
 
   useEffect(() => {
 
-    fetch("http://localhost:5000/tickets")
+    const user =
+      JSON.parse(
+        localStorage.getItem("user")
+      );
+
+    fetch(
+      `http://localhost:5000/tickets/${user.id}`
+    )
       .then((response) => response.json())
       .then((data) => {
         setTickets(data);
@@ -31,56 +38,103 @@ function MyTickets() {
   };
 
   return (
-    <div className="hero">
+    <div
+      style={{
+        backgroundColor: "#f4f6f9",
+        minHeight: "100vh",
+        padding: "40px"
+      }}
+    >
 
-      <h1>My Tickets</h1>
+      <h1
+        style={{
+          textAlign: "center",
+          color: "#003366",
+          marginBottom: "40px"
+        }}
+      >
+        🎫 My Tickets
+      </h1>
 
-      {tickets.map((ticket) => (
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: "20px"
+        }}
+      >
 
-        <div
-          key={ticket.id}
-          style={{
-            border: "1px solid gray",
-            padding: "10px",
-            margin: "10px"
-          }}
-        >
+        {tickets.map((ticket) => (
 
-          <h3>
-            Ticket #{ticket.id}
-          </h3>
-
-          <p>
-            From: {ticket.departCity}
-          </p>
-
-          <p>
-            To: {ticket.destination}
-          </p>
-
-          <p>
-            Passengers: {ticket.passengers}
-          </p>
-
-          <p>
-            Class: {ticket.class}
-          </p>
-
-          <p>
-            Date: {ticket.date}
-          </p>
-
-          <button
-            onClick={() =>
-              deleteTicket(ticket.id)
-            }
+          <div
+            key={ticket.id}
+            style={{
+              backgroundColor: "white",
+              width: "320px",
+              padding: "20px",
+              borderRadius: "15px",
+              boxShadow:
+                "0 4px 12px rgba(0,0,0,0.15)"
+            }}
           >
-            Cancel Ticket
-          </button>
 
-        </div>
+            <h2
+              style={{
+                color: "#003366",
+                textAlign: "center"
+              }}
+            >
+              Ticket #{ticket.id}
+            </h2>
 
-      ))}
+            <hr />
+
+            <p>
+              <strong>From:</strong>{" "}
+              {ticket.departCity}
+            </p>
+
+            <p>
+              <strong>To:</strong>{" "}
+              {ticket.destination}
+            </p>
+
+            <p>
+              <strong>Passengers:</strong>{" "}
+              {ticket.passengers}
+            </p>
+
+            <p>
+              <strong>Class:</strong>{" "}
+              {ticket.class}
+            </p>
+
+            <p>
+              <strong>Date:</strong>{" "}
+              {ticket.date}
+            </p>
+
+            <div
+              style={{
+                textAlign: "center",
+                marginTop: "20px"
+              }}
+            >
+              <button
+                onClick={() =>
+                  deleteTicket(ticket.id)
+                }
+              >
+                Cancel Ticket
+              </button>
+            </div>
+
+          </div>
+
+        ))}
+
+      </div>
 
     </div>
   );
