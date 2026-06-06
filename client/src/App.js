@@ -1,7 +1,5 @@
 import "./App.css";
-import Signup from "./pages/Signup";
-import Profile from "./pages/Profile";
-import MyTickets from "./pages/MyTickets";
+import AdminLogin from "./pages/AdminLogin";
 
 import {
   BrowserRouter,
@@ -13,7 +11,13 @@ import {
 import Home from "./pages/Home";
 import Flights from "./pages/Flights";
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import Reservations from "./pages/Reservations";
+import Profile from "./pages/Profile";
+import MyTickets from "./pages/MyTickets";
+import FlightStatus from "./pages/FlightStatus";
+import Feedback from "./pages/Feedback";
+import Admin from "./pages/Admin";
 
 function App() {
 
@@ -36,7 +40,9 @@ function App() {
           </li>
 
           <li>
-            <Link to="/flights">Flights</Link>
+            <Link to="/flights">
+              Flights
+            </Link>
           </li>
 
           <li>
@@ -46,37 +52,38 @@ function App() {
           </li>
 
           {user ? (
-  <>
-    <li>
-      <Link to="/tickets">
-        My Tickets
-      </Link>
-    </li>
+            <>
+              <li>
+                <Link to="/tickets">
+                  My Tickets
+                </Link>
+              </li>
 
-    <li>
-      <Link to="/profile">
-        Profile
-      </Link>
-    </li>
+              <li>
+                <Link to="/profile">
+                  Profile
+                </Link>
+              </li>
 
-    <li>
-      <li>
-  <a
-    href="/"
-    onClick={() => {
-      localStorage.removeItem("user");
-    }}
-    style={{
-      color: "white",
-      textDecoration: "none"
-    }}
-  >
-    Logout
-  </a>
-</li>
-    </li>
-  </>
-) : (
+              <li>
+                <a
+                  href="/"
+                  onClick={() => {
+                    localStorage.removeItem(
+                      "user"
+                    );
+                  }}
+                  style={{
+                    color: "white",
+                    textDecoration:
+                      "none"
+                  }}
+                >
+                  Logout
+                </a>
+              </li>
+            </>
+          ) : (
             <>
               <li>
                 <Link to="/login">
@@ -133,7 +140,25 @@ function App() {
           element={<MyTickets />}
         />
 
+        <Route
+          path="/flightstatus"
+          element={<FlightStatus />}
+        />
 
+        <Route
+          path="/feedback"
+          element={<Feedback />}
+        />
+
+        <Route
+          path="/admin"
+          element={<Admin />}
+        />
+
+        <Route
+        path="/adminlogin"
+        element={<AdminLogin />}
+      />
 
       </Routes>
 
