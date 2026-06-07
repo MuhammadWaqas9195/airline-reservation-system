@@ -1,3 +1,5 @@
+import { motion } from "motion/react";
+
 function Flights() {
 
   const flights = [
@@ -113,6 +115,15 @@ function Flights() {
         Explore our most popular destinations and reserve your next flight
       </p>
 
+      <motion.div
+         initial={{ opacity: 0, scale: 0.5 }}
+         animate={{ opacity: 1, scale: 1 }}
+         transition={{
+         type: "spring",
+         stiffness: 300,
+         damping: 15,
+           }}
+      >
       <div
         style={{
           display: "flex",
@@ -122,17 +133,26 @@ function Flights() {
         }}
       >
         {flights.map((flight) => (
-          <div
+           <motion.div
             key={flight.id}
-            style={{
-              backgroundColor: "white",
-              width: "300px",
-              padding: "20px",
-              borderRadius: "15px",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-              textAlign: "center"
-            }}
-          >
+            whileHover={{
+            scale: 1.05,
+            y: -5,
+           }}
+          transition={{
+            type: "spring",
+            stiffness: 300,
+           damping: 15,
+           }}
+           style={{
+            backgroundColor: "white",
+            width: "300px",
+            padding: "20px",
+            borderRadius: "15px",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+            textAlign: "center",
+           }}
+            >
             <h2
               style={{
                 color: "#003366"
@@ -186,10 +206,11 @@ function Flights() {
             >
               Reserve Flight
             </button>
-
-          </div>
+          </motion.div>
+          
         ))}
       </div>
+      </motion.div>
     </div>
   );
 }
