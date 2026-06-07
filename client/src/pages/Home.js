@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { motion } from "motion/react";
 
 function Home() {
   return (
@@ -18,6 +19,11 @@ function Home() {
           color: "white",
           padding: "50px"
         }}
+      >
+      <motion.div
+      initial={{opacity: 0, y:-100}}
+      animate={{opacity: 1, y:0}}
+      transition={{duration: 2, ease:"easeInOut"}}
       >
         <h1
           style={{
@@ -41,6 +47,7 @@ function Home() {
           Book flights easily and travel comfortably
           to destinations around the globe.
         </p>
+        </motion.div>
 
         <Link to="/flights">
           <button
@@ -62,6 +69,11 @@ function Home() {
           backgroundColor: "#f4f4f4"
         }}
       >
+      <motion.div
+      initial={{opacity: 0, x:-100}}
+      whileInView={{opacity: 1, x:0}}
+      transition={{duration: 2, ease:"easeInOut"}}
+      >
         <h2 style={{ color: "#003366" }}>
           Why Choose Passage Airline?
         </h2>
@@ -70,8 +82,8 @@ function Home() {
         <p>✓ Secure Online Reservations</p>
         <p>✓ Affordable Flight Prices</p>
         <p>✓ 24/7 Customer Support</p>
+      </motion.div>
       </div>
-
       <div
         style={{
           backgroundColor: "#003366",
