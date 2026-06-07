@@ -70,6 +70,13 @@ function Login() {
         Login
       </button>
 
+      <br />
+      <br />
+
+        <a
+          href="/adminlogin"
+          >Admin Sign In</a>
+
     </div>
   );
 }

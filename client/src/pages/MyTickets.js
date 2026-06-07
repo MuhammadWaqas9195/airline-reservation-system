@@ -56,85 +56,136 @@ function MyTickets() {
         🎫 My Tickets
       </h1>
 
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "center",
-          gap: "20px"
-        }}
-      >
+      {tickets.length === 0 ? (
 
-        {tickets.map((ticket) => (
+        <h2
+          style={{
+            textAlign: "center",
+            color: "#666"
+          }}
+        >
+          No Tickets Found
+        </h2>
 
-          <div
-            key={ticket.id}
-            style={{
-              backgroundColor: "white",
-              width: "320px",
-              padding: "20px",
-              borderRadius: "15px",
-              boxShadow:
-                "0 4px 12px rgba(0,0,0,0.15)"
-            }}
-          >
+      ) : (
 
-            <h2
-              style={{
-                color: "#003366",
-                textAlign: "center"
-              }}
-            >
-              Ticket #{ticket.id}
-            </h2>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            gap: "25px"
+          }}
+        >
 
-            <hr />
-
-            <p>
-              <strong>From:</strong>{" "}
-              {ticket.departCity}
-            </p>
-
-            <p>
-              <strong>To:</strong>{" "}
-              {ticket.destination}
-            </p>
-
-            <p>
-              <strong>Passengers:</strong>{" "}
-              {ticket.passengers}
-            </p>
-
-            <p>
-              <strong>Class:</strong>{" "}
-              {ticket.class}
-            </p>
-
-            <p>
-              <strong>Date:</strong>{" "}
-              {ticket.date}
-            </p>
+          {tickets.map((ticket) => (
 
             <div
+              key={ticket.id}
               style={{
-                textAlign: "center",
-                marginTop: "20px"
+                backgroundColor: "white",
+                width: "350px",
+                padding: "20px",
+                borderRadius: "15px",
+                borderTop: "8px solid #003366",
+                boxShadow:
+                  "0 4px 12px rgba(0,0,0,0.15)"
               }}
             >
-              <button
-                onClick={() =>
-                  deleteTicket(ticket.id)
-                }
+
+              <h2
+                style={{
+                  color: "#003366",
+                  textAlign: "center"
+                }}
               >
-                Cancel Ticket
-              </button>
+                Ticket #{ticket.id}
+              </h2>
+
+              <hr />
+
+              <p>
+                <strong>Booking Ref:</strong>{" "}
+                PA{ticket.id}X
+              </p>
+
+              <p>
+                <strong>Airline:</strong>{" "}
+                Passage Airlines
+              </p>
+
+              <p>
+                <strong>Flight:</strong>{" "}
+                PA{ticket.id}
+              </p>
+
+              <p>
+                <strong>From:</strong>{" "}
+                {ticket.departCity}
+              </p>
+
+              <p>
+                <strong>To:</strong>{" "}
+                {ticket.destination}
+              </p>
+
+              <p>
+                <strong>Passengers:</strong>{" "}
+                {ticket.passengers}
+              </p>
+
+              <p>
+                <strong>Class:</strong>{" "}
+                {ticket.class}
+              </p>
+
+              <p>
+                <strong>Date:</strong>{" "}
+                {ticket.date}
+              </p>
+
+              <p>
+                <strong>Status:</strong>{" "}
+                <span
+                  style={{
+                    color: "green",
+                    fontWeight: "bold"
+                  }}
+                >
+                  Confirmed
+                </span>
+              </p>
+
+              <div
+                style={{
+                  textAlign: "center",
+                  marginTop: "20px"
+                }}
+              >
+                <button
+                  onClick={() =>
+                    deleteTicket(ticket.id)
+                  }
+                  style={{
+                    backgroundColor: "#003366",
+                    color: "white",
+                    border: "none",
+                    padding: "10px 20px",
+                    borderRadius: "8px",
+                    cursor: "pointer"
+                  }}
+                >
+                  Cancel Ticket
+                </button>
+              </div>
+
             </div>
 
-          </div>
+          ))}
 
-        ))}
+        </div>
 
-      </div>
+      )}
 
     </div>
   );

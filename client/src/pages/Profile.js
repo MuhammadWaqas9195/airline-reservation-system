@@ -15,66 +15,168 @@ function Profile() {
   return (
     <div
       style={{
-        minHeight: "80vh",
-        backgroundColor: "#f4f6f9",
+        minHeight: "100vh",
+        background:
+          "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
         display: "flex",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        padding: "30px"
       }}
     >
       <div
         style={{
-          backgroundColor: "white",
+          width: "700px",
+          background: "rgba(255,255,255,0.15)",
+          backdropFilter: "blur(10px)",
           padding: "30px",
-          width: "450px",
-          borderRadius: "15px",
-          boxShadow: "0 4px 15px rgba(0,0,0,0.2)",
-          textAlign: "center"
+          borderRadius: "20px",
+          color: "white",
+          boxShadow: "0 8px 25px rgba(0,0,0,0.4)"
         }}
       >
         <h1
           style={{
-            color: "#003366"
+            textAlign: "center",
+            marginBottom: "20px"
           }}
         >
-          👤 User Profile
+          Welcome, {user?.name} ✈️
         </h1>
 
-        <h2>
-          Welcome, {user?.name}
+        <h2
+          style={{
+            textAlign: "center",
+            color: "#ffd54f"
+          }}
+        >
+          Your Profile Information
         </h2>
 
         <hr />
 
         <p>
-          <strong>Email:</strong>
-          {" "}
-          {user?.email}
+          <strong>Email:</strong> {user?.email}
         </p>
 
         <p>
-          <strong>City:</strong>
-          {" "}
-          {user?.city}
+          <strong>City:</strong> {user?.city}
         </p>
 
         <p>
-          <strong>State:</strong>
-          {" "}
-          {user?.state}
+          <strong>State:</strong> {user?.state}
         </p>
 
         <p>
-          <strong>Zip:</strong>
-          {" "}
-          {user?.zip}
+          <strong>Zip Code:</strong> {user?.zip}
         </p>
 
         <br />
 
-        <button onClick={handleLogout}>
-          Logout
-        </button>
+        <div
+          style={{
+            display: "flex",
+            gap: "10px",
+            justifyContent: "center",
+            flexWrap: "wrap"
+          }}
+        >
+          <button
+            onClick={() =>
+              window.location.href =
+                "/reservations"
+            }
+          >
+            Book Flight
+          </button>
+
+          <button
+            onClick={() =>
+              window.location.href =
+                "/tickets"
+            }
+          >
+            My Tickets
+          </button>
+
+          <button
+            onClick={() =>
+              window.location.href =
+                "/flightstatus"
+            }
+          >
+            Flight Status
+          </button>
+        </div>
+
+        <br />
+
+        <h2
+          style={{
+            textAlign: "center",
+            color: "#ffd54f"
+          }}
+        >
+          Account Management
+        </h2>
+
+        <div
+          style={{
+            display: "flex",
+            gap: "10px",
+            justifyContent: "center",
+            flexWrap: "wrap"
+          }}
+        >
+          <button
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+
+          <button
+  onClick={() => {
+
+    localStorage.removeItem(
+      "user"
+    );
+
+    alert(
+      "Account Deleted Successfully"
+    );
+
+    window.location.href =
+      "/signup";
+
+  }}
+>
+  Delete Account
+</button>
+
+          <button
+  onClick={() => {
+
+    alert(
+      "Edit Account Feature Coming Soon"
+    );
+
+  }}
+>
+  Edit Account
+</button>
+
+          <button
+            onClick={() =>
+              window.location.href =
+                "/feedback"
+            }
+          >
+            Feedback
+          </button>
+        </div>
+
       </div>
     </div>
   );

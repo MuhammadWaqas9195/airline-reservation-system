@@ -2,6 +2,11 @@ import { useState } from "react";
 
 function Reservations() {
 
+  const user =
+    JSON.parse(
+      localStorage.getItem("user")
+    );
+
   const states = [
     "Alabama","Alaska","Arizona","Arkansas","California",
     "Colorado","Connecticut","Delaware","Florida","Georgia",
@@ -15,108 +20,123 @@ function Reservations() {
     "Virginia","Washington","West Virginia","Wisconsin","Wyoming"
   ];
 
-  const [formData, setFormData] = useState({
-    from: "New York",
-    to: "",
-    date: "",
-    passengers: "",
-    travelClass: ""
-  });
+  const [formData, setFormData] =
+    useState({
+      from: "New York",
+      to: "",
+      date: "",
+      passengers: "",
+      travelClass: ""
+    });
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]:
+        e.target.value
     });
   };
 
   const handleReserve = async () => {
 
-  const user = JSON.parse(
-    localStorage.getItem("user")
-  );
+    if (
+      !formData.to ||
+      !formData.date ||
+      !formData.passengers ||
+      !formData.travelClass
+    ) {
+      alert(
+        "Please fill all fields"
+      );
+      return;
+    }
 
-  if (!user) {
-    alert("Please login first");
-    return;
-  }
+    try {
 
-  if (
-    !formData.to ||
-    !formData.date ||
-    !formData.passengers ||
-    !formData.travelClass
-  ) {
-    alert("Please fill all fields");
-    return;
-  }
+      const response =
+        await fetch(
+          "http://localhost:5000/reserve",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+            body: JSON.stringify({
+              ...formData,
+              userID: user.id
+            })
+          }
+        );
 
-  try {
+      const data =
+        await response.json();
 
-    const response = await fetch(
-      "http://localhost:5000/reserve",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          ...formData,
-          userID: user.id
-        })
-      }
-    );
+      alert(data.message);
 
-    const data = await response.json();
+      window.location.href =
+        "/tickets";
 
-    alert(data.message);
+    } catch (error) {
 
-    window.location.href = "/tickets";
+      alert(
+        "Unable to create reservation."
+      );
 
-  } catch (error) {
+    }
 
-    console.error(error);
-
-    alert(
-      "Unable to create reservation. Please try again."
-    );
-  }
-};
+  };
 
   return (
     <div
       style={{
-        minHeight: "80vh",
+        minHeight: "100vh",
         backgroundColor: "#f4f6f9",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        padding: "40px"
+        padding: "30px"
       }}
     >
       <div
         style={{
+          width: "500px",
           backgroundColor: "white",
-          width: "450px",
           padding: "30px",
-          borderRadius: "15px",
-          boxShadow: "0 4px 15px rgba(0,0,0,0.2)",
-          textAlign: "center"
+          borderRadius: "20px",
+          boxShadow:
+            "0 5px 20px rgba(0,0,0,.15)"
         }}
       >
         <h1
           style={{
-            color: "#003366",
-            marginBottom: "25px"
+            textAlign: "center",
+            color: "#003366"
           }}
         >
-          Flight Reservation
+          ✈ Flight Reservation
         </h1>
+
+        <h3
+          style={{
+            textAlign: "center",
+            color: "#666"
+          }}
+        >
+          Welcome {user?.name}
+        </h3>
+
+        <br />
 
         <input
           name="from"
           value={formData.from}
           readOnly
+          style={{
+            width: "100%",
+            padding: "12px",
+            boxSizing: "border-box"
+          }}
         />
 
         <br /><br />
@@ -125,19 +145,25 @@ function Reservations() {
           name="to"
           value={formData.to}
           onChange={handleChange}
+          style={{
+            width: "100%",
+            padding: "12px"
+          }}
         >
           <option value="">
             Select Destination
           </option>
 
-          {states.map((state) => (
-            <option
-              key={state}
-              value={state}
-            >
-              {state}
-            </option>
-          ))}
+          {states.map(
+            (state) => (
+              <option
+                key={state}
+                value={state}
+              >
+                {state}
+              </option>
+            )
+          )}
         </select>
 
         <br /><br />
@@ -147,6 +173,11 @@ function Reservations() {
           name="date"
           value={formData.date}
           onChange={handleChange}
+          style={{
+            width: "100%",
+            padding: "12px",
+            boxSizing: "border-box"
+          }}
         />
 
         <br /><br />
@@ -155,6 +186,10 @@ function Reservations() {
           name="passengers"
           value={formData.passengers}
           onChange={handleChange}
+          style={{
+            width: "100%",
+            padding: "12px"
+          }}
         >
           <option value="">
             Select Passengers
@@ -173,6 +208,10 @@ function Reservations() {
           name="travelClass"
           value={formData.travelClass}
           onChange={handleChange}
+          style={{
+            width: "100%",
+            padding: "12px"
+          }}
         >
           <option value="">
             Select Class
@@ -187,14 +226,15 @@ function Reservations() {
           </option>
 
           <option value="First">
-            First Class
+            First
           </option>
         </select>
 
         <br /><br />
 
-        <h3
+        <h2
           style={{
+            textAlign: "center",
             color: "green"
           }}
         >
@@ -202,13 +242,79 @@ function Reservations() {
           {formData.passengers
             ? formData.passengers * 299
             : 299}
-        </h3>
+        </h2>
 
-        <button
-          onClick={handleReserve}
+        <div
+          style={{
+            backgroundColor: "#eef5ff",
+            padding: "8px",
+            borderRadius: "10px",
+            marginTop: "15px",
+            marginBottom: "20px"
+          }}
         >
-          Reserve Flight
-        </button>
+          <h3>
+            Reservation Summary
+          </h3>
+
+          <p style={{ margin: "5px 0" }}>
+            <strong>From:</strong>{" "}
+            {formData.from}
+          </p>
+
+          <p style={{ margin: "5px 0" }}>
+            <strong>To:</strong>{" "}
+            {formData.to || "-"}
+          </p>
+
+          <p style={{ margin: "5px 0" }}>
+            <strong>Passengers:</strong>{" "}
+            {formData.passengers || "-"}
+          </p>
+
+          <p style={{ margin: "5px 0" }}>
+            <strong>Class:</strong>{" "}
+            {formData.travelClass
+              ? formData.travelClass + " Class"
+              : "-"}
+          </p>
+
+          <p style={{ margin: "5px 0" }}>
+            <strong>Date:</strong>{" "}
+            {formData.date || "-"}
+          </p>
+
+          <p style={{ margin: "5px 0" }}>
+            <strong>Estimated Fare:</strong>{" "}
+            $
+            {formData.passengers
+              ? formData.passengers * 299
+              : 299}
+          </p>
+
+        </div>
+
+        <div
+          style={{
+            textAlign: "center"
+          }}
+        >
+          <button
+            onClick={handleReserve}
+            style={{
+              backgroundColor:
+                "#003366",
+              color: "white",
+              border: "none",
+              padding:
+                "12px 25px",
+              borderRadius: "8px",
+              cursor: "pointer"
+            }}
+          >
+            Reserve Flight
+          </button>
+        </div>
 
       </div>
     </div>
